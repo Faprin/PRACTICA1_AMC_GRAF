@@ -188,7 +188,7 @@ public class ControllerMenuPrincipal {
     public void comparaDosEstrategias() {
         try {
             // Cargar el archivo FXML de la nueva ventana
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("comparaDosEstrategias.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("2Estrategias.fxml"));
             Parent root = fxmlLoader.load();
 
             // Crear y configurar la nueva ventana (Stage)

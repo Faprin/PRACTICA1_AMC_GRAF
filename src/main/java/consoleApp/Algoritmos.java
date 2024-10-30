@@ -75,7 +75,7 @@ public class Algoritmos {
     }
 
 
-    public static ArrayList<Punto> dyv(ArrayList<Punto> t, int izq, int der)  {
+    public static ArrayList<Punto> dyv(ArrayList<Punto> t, int izq, int der) throws Exception {
         ArrayList<Punto> retorno = new ArrayList<>();
         int nElementos = (der - izq) + 1;
 
@@ -85,6 +85,14 @@ public class Algoritmos {
 
             ArrayList<Punto> solIzq = dyv(t, izq, pivote);
             ArrayList<Punto> solDer = dyv(t, pivote + 1, der);
+
+            // Asegúrate de que solIzq y solDer tienen al menos dos elementos
+            if (solIzq.size() < 2) {
+                throw new Exception("Sol Izquierda ha devuelto un array de menos de 2 posiciones");
+            }
+            if (solDer.size() < 2) {
+                throw new Exception("Sol Derecha ha devuelto un array de menos de 2 posiciones");
+            }
 
             double distIzq = distancia(solIzq.get(0), solIzq.get(1));
             contador++;
@@ -99,18 +107,16 @@ public class Algoritmos {
                 retorno = solDer;
             }
 
-            // nos centramos en la franja
-            int franjaIzq = 0, franjaDer = 0;
-            for (franjaIzq = pivote; franjaIzq >= 0; franjaIzq--) {
-                if ((t.get(pivote + 1).getX() - t.get(franjaIzq).getX()) > minDistance) {
-                    break;
-                }
+            // calculo la parte de la izquierda de la franja
+            int franjaIzq = pivote;
+            while (franjaIzq > izq && (t.get(pivote).getX() - t.get(franjaIzq).getX()) < minDistance) {
+                franjaIzq--;
             }
 
-            for (franjaDer = pivote + 1; franjaDer < der; franjaDer++) {
-                if ((t.get(franjaDer).getX() - t.get(pivote).getX()) > minDistance) {
-                    break;
-                }
+            // calculo  la parte de la derecha de la franja
+            int franjaDer = pivote + 1;
+            while (franjaDer < der && (t.get(franjaDer).getX() - t.get(pivote).getX()) < minDistance) {
+                franjaDer++;
             }
 
             double distancia = 0;
@@ -139,10 +145,9 @@ public class Algoritmos {
     public static ArrayList<Punto> dyvMejorado(ArrayList<Punto> t, int izq, int der) {
         ArrayList<Punto> retorno = new ArrayList<>();
         int nElementos = (der - izq) + 1;
-        int casoBase = (int) Math.sqrt(nElementos);
 
-        if (nElementos > casoBase) {
-            int pivote = izq + (der - izq) / 2;
+        if (nElementos >= 4) {
+            int pivote = (izq + der) / 2;
             double minDistance;
 
             ArrayList<Punto> solIzq = dyvMejorado(t, izq, pivote);
@@ -161,36 +166,57 @@ public class Algoritmos {
                 retorno = solDer;
             }
 
-            // nos centramos en la franja
-            ArrayList<Punto> franja = new ArrayList<>();
-            for(int i = izq ; i<der;i++) {
-                if(Math.abs(t.get(i).getX() - t.get(pivote).getX()) < minDistance) {
-                    franja.add(t.get(i));
-                }
+            // calculo la parte de la izquierda de la franja
+            int franjaIzq = pivote;
+            while (franjaIzq > izq && (t.get(pivote).getX() - t.get(franjaIzq).getX()) < minDistance) {
+                franjaIzq--;
             }
 
-            // ordeno los elementos en franja por el eje y -> creo la franja 2S
+            // calculo  la parte de la derecha de la franja
+            int franjaDer = pivote + 1;
+            while (franjaDer < der && (t.get(franjaDer).getX() - t.get(pivote).getX()) < minDistance) {
+                franjaDer++;
+            }
+
+            // array auxiliar que vamos a ordenar por y y despues hacerle un exhaustivo
+            ArrayList<Punto> franja = new ArrayList<>();
+            for (int i = franjaIzq + 1; i <= franjaDer - 1; i++) {
+                franja.add(t.get(i));
+            }
+
+            // ordeno los elementos en franja por el eje y
             quickSort(franja, 'y');
 
-            // ¿Comprobamos aquellos puntos que estan a menos de 12 posiciones?
-                // no oentiendo que se pretende decir con esta afirmacion
-                // no entiendo lo de los 11 puntos de la franja
             double distancia = 0;
             for (int i = 0; i < franja.size(); i++) {
-                for (int j = i + 1; j < franja.size() && (franja.get(j).getY() - franja.get(i).getY()) < minDistance; j++) {
+                for (int j = i + 1; j < franja.size() && (franja.get(j).getY() - franja.get(i).getY()) < minDistance && j <= 11 + i; j++) {
                     distancia = distancia(franja.get(i), franja.get(j));
                     contador++;
-                    if(distancia < minDistance) {
+                    if (distancia < minDistance) {
                         retorno.set(0, franja.get(i));
                         retorno.set(1, franja.get(j));
                         minDistance = distancia;
                     }
                 }
             }
-            
+
+
+            /*for (int i = pivote-1; i >= 0; i--) {
+                for (int j = pivote + 1; j < franja.size() && (franja.get(j).getY() - franja.get(i).getY() < minDistance) && (j <= 11); j++) {
+                    distancia = distancia(franja.get(i), franja.get(j));
+                    contador++;
+                    if (distancia < minDistance) {
+                        retorno.set(0, t.get(i));
+                        retorno.set(1, t.get(j));
+                        minDistance = distancia;
+                    }
+                }
+            }*/
+
         } else {
             retorno = exhaustivo(t, izq, der);
         }
+
 
         return retorno;
     }

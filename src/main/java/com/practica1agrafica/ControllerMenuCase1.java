@@ -28,6 +28,18 @@ public class ControllerMenuCase1 {
     }
 
     public void datasetPeorCaso() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Capacidad del dataset");
+        dialog.setContentText("Capacidad:");
+        Optional<String> result = dialog.showAndWait();
 
+        result.ifPresent(capacidadStr -> {
+            try {
+                int capacidad = Integer.parseInt(capacidadStr);
+                ProcessFile.createFileWorstCase(capacidad);
+            } catch (NumberFormatException e) {
+                System.out.println("Capacidad incorrecta");
+            }
+        });
     }
 }
