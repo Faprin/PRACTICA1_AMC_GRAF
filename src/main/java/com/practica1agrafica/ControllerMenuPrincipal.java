@@ -181,6 +181,7 @@ public class ControllerMenuPrincipal {
 
     @FXML
     public void compararTodasEstrategias() {
+        //POR RELLENAR
 
     }
 
