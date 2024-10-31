@@ -6,6 +6,20 @@ import java.util.Scanner;
 
 public class App {
 
+    private static boolean peorCaso = false;
+
+    public static void switchPeorCaso() {
+        if(peorCaso) {
+            peorCaso = false;
+        } else {
+            peorCaso = true;
+        }
+    }
+
+    public static boolean getPeorCaso() {
+        return peorCaso;
+    }
+
     public static void menu() {
         System.out.println(" ------- Menu ------- ");
         System.out.println("1. Crear un dataset aleatorio");
@@ -13,6 +27,13 @@ public class App {
         System.out.println("3. Comprobar estrategias");
         System.out.println("4. Comparar todas las estrategias");
         System.out.println("5, Comparar dos estrategias");
+        System.out.println(" ");
+        if(!peorCaso) {
+            System.out.println("6. Activar PEOR CASO");
+        } else {
+            System.out.println("6. Desactivar PEOR CASO");
+        }
+        System.out.println(" ");
 
         System.out.println("9. Salir");
 
@@ -42,14 +63,35 @@ public class App {
     }
 
     public static ArrayList<Punto> generaDatasetPorTalla(int talla) {
+        // tenemos que verificar si la variable peorCaso esta a true
         Random random = new Random(System.nanoTime());
         ArrayList<Punto> datos = new ArrayList();
-
-        for (int i = 0; i < talla; i++) {
-            datos.add(new Punto());
-            datos.get(i).setId(i + 1);
-            datos.get(i).setX(random.nextDouble(500 - 0 + 1));
-            datos.get(i).setY(random.nextDouble(500 - 0 + 1));
+        int num = 0, den = 0;
+        double x, y;
+        if (!getPeorCaso()) {
+            for (int i = 0; i < talla; i++) {
+                num = random.nextInt(4000 - 1 + 1) + 1; // entre 1 y 4000
+                den = random.nextInt(17 - 7 + 1) + 7; // entre 1 y 17
+                x = num/((double) den+0.37);
+                y = (random.nextInt(4000 -1+1) + 1)/((double) (random.nextInt(17 - 7 + 1) + 7)+0.37);
+                datos.add(new Punto());
+                datos.get(i).setId(i + 1);
+                datos.get(i).setX(x);
+                datos.get(i).setY(y);
+            }
+        } else {
+            // misma coordenada x
+            x = random.nextDouble(501);
+            for (int i = 0; i < talla; i++) {
+                int aux1 = random.nextInt(1000) + 7;
+                y = aux1 / ((double) i + 1 + i * 0.100);
+                num = random.nextInt(3);
+                y += (i % 500) - num * (random.nextInt(100));
+                datos.add(new Punto());
+                datos.get(i).setId(i + 1);
+                datos.get(i).setX(x);
+                datos.get(i).setY(y);
+            }
         }
 
         return datos;
@@ -81,32 +123,17 @@ public class App {
 
             switch (eleccion) {
                 case 1 -> {
-                    System.out.println(" ------- Tipo de dataset ------- ");
-                    System.out.println("1. dataset para caso general");
-                    System.out.println("2. dataset para caso peor");
-                    System.out.println("Indica el tipo de dataset: ");
-                    eleccion = in.nextInt();
-
-                    do {
-                        switch (eleccion) {
-                            case 1 -> {
-                                // genera un dataset aleatorio para el caso general
-                                System.out.println("Indica la capacidad del dataset: ");
-                                int capacidad = in.nextInt();
-                                ProcessFile.createFile(capacidad);
-                            }
-                            case 2 -> {
-                                // genera un dataset para el caso peor
-                                System.out.println("Indica la capacidad del dataset: ");
-                                int capacidad = in.nextInt();
-                                ProcessFile.createFileWorstCase(capacidad);
-                            }
-                            default -> {
-                                System.out.println("Tipo no disponible");
-                            }
-                        }
-                    } while (eleccion != 1 && eleccion != 2);
-
+                    if (!getPeorCaso()) {
+                        // genera un dataset aleatorio para el caso general
+                        System.out.println("Indica la capacidad del dataset: ");
+                        int capacidad = in.nextInt();
+                        ProcessFile.createFile(capacidad);
+                    } else {
+                        // genera un dataset para el caso peor
+                        System.out.println("Indica la capacidad del dataset: ");
+                        int capacidad = in.nextInt();
+                        ProcessFile.createFileWorstCase(capacidad);
+                    }
                 }
                 case 2 -> {
                     System.out.println("Indica la ruta del fichero: ");
@@ -444,6 +471,10 @@ public class App {
                         }
                     } while (algoritmo1 != 5);
 
+                }
+                case 6 -> {
+                    switchPeorCaso();
+                    System.out.println("El peor caso ha sido activado -> " + getPeorCaso());
                 }
             }
 

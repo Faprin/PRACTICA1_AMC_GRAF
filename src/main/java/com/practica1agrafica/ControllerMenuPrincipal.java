@@ -22,44 +22,50 @@ public class ControllerMenuPrincipal {
     private Scanner in = new Scanner(System.in);
     private String path = "datasets/ch130.tsp";
 
+    private static boolean peorCaso = false;
+
+    @FXML
+    public  void switchPeorCaso() {
+        if(peorCaso) {
+            peorCaso = false;
+        } else {
+            peorCaso = true;
+        }
+        System.out.println("Peor caso a " + peorCaso);
+    }
+
+    public static boolean getPeorCaso() {
+        return peorCaso;
+    }
+
     private ArrayList<Punto> copiaArray(ArrayList<Punto> original) {
         return new ArrayList<>(original);
     }
 
-    public static ArrayList<Punto> generaDatasetPorTalla(int talla) {
-        Random random = new Random(System.nanoTime());
-        ArrayList<Punto> datos = new ArrayList();
 
-        for (int i = 0; i < talla; i++) {
-            datos.add(new Punto());
-            datos.get(i).setId(i + 1);
-            datos.get(i).setX(random.nextDouble(500 - 0 + 1));
-            datos.get(i).setY(random.nextDouble(500 - 0 + 1));
-        }
-
-        return datos;
-    }
-
+    // CASE 1
     @FXML
     public void crearDatasetAleatorio() throws IOException {
-        try {
-            // Cargar el archivo FXML de la nueva ventana
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("menuCase1.fxml"));
-            Parent root = fxmlLoader.load();
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Crear dataset");
+        dialog.setHeaderText("Capacidad del dataset: ");
+        Optional<String> result = dialog.showAndWait();
 
-            // Crear y configurar la nueva ventana (Stage)
-            Stage stage = new Stage();
-            stage.setTitle("Menu Caso Medio");
-            stage.setScene(new Scene(root));
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error al cargar la ventana: " + e.getMessage());
-        }
-
+        result.ifPresent(capacidadStr -> {
+            try {
+                int capacidad = Integer.parseInt(capacidadStr);
+                if(!getPeorCaso()) {
+                    ProcessFile.createFile(capacidad);
+                } else {
+                    ProcessFile.createFileWorstCase(capacidad);
+                }
+            } catch( NumberFormatException e ) {
+                System.out.println("No se puede crear dataset");
+            }
+        });
     }
 
+    // CASE 2
     @FXML
     public void cargarDatasetEnMemoria() {
         TextInputDialog dialog = new TextInputDialog();
@@ -73,6 +79,7 @@ public class ControllerMenuPrincipal {
         });
     }
 
+    // CASE 3
     @FXML
     public void compararEstrategias() {
         try {
@@ -179,12 +186,14 @@ public class ControllerMenuPrincipal {
         }
     }
 
+    // CASE 4
     @FXML
     public void compararTodasEstrategias() {
         //POR RELLENAR
 
     }
 
+    // CASE 5
     public void comparaDosEstrategias() {
         try {
             // Cargar el archivo FXML de la nueva ventana

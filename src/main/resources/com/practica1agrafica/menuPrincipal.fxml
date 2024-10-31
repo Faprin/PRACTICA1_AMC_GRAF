@@ -7,7 +7,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="402.0" prefWidth="606.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.practica1agrafica.ControllerMenuPrincipal">
    <children>
-      <Label layoutX="99.0" layoutY="53.0" prefHeight="27.0" prefWidth="173.0" text="MENU PRINCIPAL">
+      <Label layoutX="122.0" layoutY="27.0" prefHeight="27.0" prefWidth="173.0" text="MENU PRINCIPAL">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
@@ -17,5 +17,6 @@
       <Button layoutX="122.0" layoutY="216.0" mnemonicParsing="false" onAction="#compararEstrategias" prefHeight="30.0" prefWidth="362.0" text="Comprobar estrategias" />
       <Button layoutX="122.0" layoutY="268.0" mnemonicParsing="false" onAction="#compararTodasEstrategias" prefHeight="30.0" prefWidth="362.0" text="Comparar todas las estrategias" />
       <Button layoutX="122.0" layoutY="326.0" mnemonicParsing="false" onAction="#comparaDosEstrategias" prefHeight="30.0" prefWidth="362.0" text="Comparar dos estrategias" />
+      <Button layoutX="365.0" layoutY="65.0" mnemonicParsing="false" onAction="#switchPeorCaso" text="Activar PEOR CASO" />
    </children>
 </AnchorPane>

@@ -75,7 +75,7 @@ public class Algoritmos {
     }
 
 
-    public static ArrayList<Punto> dyv(ArrayList<Punto> t, int izq, int der) throws Exception {
+    public static ArrayList<Punto> dyv(ArrayList<Punto> t, int izq, int der) {
         ArrayList<Punto> retorno = new ArrayList<>();
         int nElementos = (der - izq) + 1;
 
@@ -85,14 +85,6 @@ public class Algoritmos {
 
             ArrayList<Punto> solIzq = dyv(t, izq, pivote);
             ArrayList<Punto> solDer = dyv(t, pivote + 1, der);
-
-            // Asegúrate de que solIzq y solDer tienen al menos dos elementos
-            if (solIzq.size() < 2) {
-                throw new Exception("Sol Izquierda ha devuelto un array de menos de 2 posiciones");
-            }
-            if (solDer.size() < 2) {
-                throw new Exception("Sol Derecha ha devuelto un array de menos de 2 posiciones");
-            }
 
             double distIzq = distancia(solIzq.get(0), solIzq.get(1));
             contador++;
