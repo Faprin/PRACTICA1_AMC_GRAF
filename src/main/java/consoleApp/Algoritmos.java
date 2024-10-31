@@ -74,7 +74,6 @@ public class Algoritmos {
         return retorno;
     }
 
-
     public static ArrayList<Punto> dyv(ArrayList<Punto> t, int izq, int der) {
         ArrayList<Punto> retorno = new ArrayList<>();
         int nElementos = (der - izq) + 1;

@@ -2,6 +2,8 @@ package com.practica1agrafica;
 
 import consoleApp.Algoritmos;
 import consoleApp.ProcessFile;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -23,6 +25,41 @@ public class ControllerMenuPrincipal {
     private String path = "datasets/ch130.tsp";
 
     private static boolean peorCaso = false;
+
+    public static ArrayList<Punto> generaDatasetPorTalla(int talla) {
+        // tenemos que verificar si la variable peorCaso esta a true
+        Random random = new Random(System.nanoTime());
+        ArrayList<Punto> datos = new ArrayList();
+        int num = 0, den = 0;
+        double x, y;
+        if (!getPeorCaso()) {
+            for (int i = 0; i < talla; i++) {
+                num = random.nextInt(4000 - 1 + 1) + 1; // entre 1 y 4000
+                den = random.nextInt(17 - 7 + 1) + 7; // entre 1 y 17
+                x = num/((double) den+0.37);
+                y = (random.nextInt(4000 -1+1) + 1)/((double) (random.nextInt(17 - 7 + 1) + 7)+0.37);
+                datos.add(new Punto());
+                datos.get(i).setId(i + 1);
+                datos.get(i).setX(x);
+                datos.get(i).setY(y);
+            }
+        } else {
+            // misma coordenada x
+            x = random.nextDouble(501);
+            for (int i = 0; i < talla; i++) {
+                int aux1 = random.nextInt(1000) + 7;
+                y = aux1 / ((double) i + 1 + i * 0.100);
+                num = random.nextInt(3);
+                y += (i % 500) - num * (random.nextInt(100));
+                datos.add(new Punto());
+                datos.get(i).setId(i + 1);
+                datos.get(i).setX(x);
+                datos.get(i).setY(y);
+            }
+        }
+
+        return datos;
+    }
 
     @FXML
     public  void switchPeorCaso() {
@@ -188,10 +225,10 @@ public class ControllerMenuPrincipal {
 
     // CASE 4
     @FXML
-    public void compararTodasEstrategias() {
-        //POR RELLENAR
+    public void compararTodasEstrategias() throws IOException {
 
     }
+
 
     // CASE 5
     public void comparaDosEstrategias() {
