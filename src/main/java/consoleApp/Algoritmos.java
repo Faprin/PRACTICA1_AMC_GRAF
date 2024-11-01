@@ -1,10 +1,18 @@
 package consoleApp;
 
-import java.lang.reflect.Array;
+
 import java.util.ArrayList;
 
 public class Algoritmos {
     private static int contador;
+
+    private static double minDistance;
+
+    private static void resetminDistance() {
+        minDistance = Double.MAX_VALUE;
+    }
+
+    public static double getMinDistance() { return minDistance; }
 
     public static int getContador() {
         return contador;
@@ -15,23 +23,27 @@ public class Algoritmos {
     }
 
     public static double distancia(Punto a, Punto b) {
+        contador++;
         return (Math.sqrt((b.getX() - a.getX()) * (b.getX() - a.getX()) + (b.getY() - a.getY()) * (b.getY() - a.getY())));
     }
 
-    public static ArrayList<Punto> exhaustivo(ArrayList<Punto> t, int izq, int der) {
-        ArrayList<Punto> retorno = new ArrayList<>();
-        double distancia = 0;
+    public static ArrayList<Punto> exhaustivo(ArrayList<Punto> t) {
+        // no tengo el constructor completo porque se no es recursivo y siempre va a tener el array el mismo tamaño
+        minDistance = Double.MAX_VALUE;
+        resetContador();
+        return exhaustivo(t, 0, t.size() -1);
+    }
 
-        // valores a comparar
+    public static ArrayList<Punto> exhaustivo(ArrayList<Punto> t, int izq, int der) {
+        ArrayList<Punto> retorno = new ArrayList<>(2);
+        double distancia = 0; // guardamos la distancia calculada
+
         retorno.add(t.get(0));
         retorno.add(t.get(1));
-        double minDistance = distancia(retorno.get(0), retorno.get(1));
-        contador++;
 
-        for (int i = izq; i < der; i++) {
-            for (int j = i + 1; j < der; j++) {
+        for (int i = izq; i <= der; i++) {
+            for (int j = i + 1; j <= der; j++) {
                 distancia = distancia(t.get(i), t.get(j));
-                contador++;
                 if (distancia < minDistance) {
                     minDistance = distancia;
                     retorno.set(0, t.get(i));
@@ -43,35 +55,42 @@ public class Algoritmos {
         return retorno;
     }
 
-    public static ArrayList<Punto> exhaustivoPoda(ArrayList<Punto> t, int izq, int der) {
-        ArrayList<Punto> retorno = new ArrayList<>();
-        double distancia = 0;
 
-        // valores a comparar
-        retorno.add(t.get(0));
-        retorno.add(t.get(1));
+    public static ArrayList<Punto> exhaustivoPoda(ArrayList<Punto> t) {
+        minDistance = Double.MAX_VALUE;
+        resetContador();
         quickSort(t, 'x');
+        return exhaustivoPoda(t, 0, t.size() -1);
+    }
 
-        double minDistance = distancia(retorno.get(0), retorno.get(1));
-        contador++;
+    public static ArrayList<Punto> exhaustivoPoda(ArrayList<Punto> t, int izq, int der) {
+        double distancia = 0;
+        ArrayList<Punto> retorno = new ArrayList<>();
 
-        // debo de ordenar el array
 
-        for (int i = izq; i < der; i++) {
-            for (int j = i + 1; j < der; j++) {
+        for (int i = izq; i <= der; i++) {
+            for (int j = i + 1; j <= der; j++) {
                 if ((t.get(j).getX() - t.get(i).getX()) > minDistance) {
                     break;
-                }
-                distancia = distancia(t.get(i), t.get(j));
-                contador++;
-                if (distancia < minDistance) {
-                    minDistance = distancia;
-                    retorno.set(0, t.get(i));
-                    retorno.set(1, t.get(j));
+                } else {
+                    distancia = distancia(t.get(i), t.get(j));
+                    if (distancia < minDistance) {
+                        minDistance = distancia;
+                        retorno.clear();
+                        retorno.add(t.get(i));
+                        retorno.add(t.get(j));
+                    }
                 }
             }
         }
+
         return retorno;
+    }
+
+    public static ArrayList<Punto> dyv(ArrayList<Punto> t) {
+        minDistance = Double.MAX_VALUE;
+        resetContador();
+        return dyv(t, 0, t.size() - 1);
     }
 
     public static ArrayList<Punto> dyv(ArrayList<Punto> t, int izq, int der) {
@@ -80,15 +99,11 @@ public class Algoritmos {
 
         if (nElementos > 4) {
             int pivote = izq + (der - izq) / 2;
-            double minDistance;
 
             ArrayList<Punto> solIzq = dyv(t, izq, pivote);
+            double distIzq = minDistance;
             ArrayList<Punto> solDer = dyv(t, pivote + 1, der);
-
-            double distIzq = distancia(solIzq.get(0), solIzq.get(1));
-            contador++;
-            double distDer = distancia(solDer.get(0), solDer.get(1));
-            contador++;
+            double distDer = minDistance;
 
             if (distIzq <= distDer) {
                 minDistance = distIzq;
@@ -100,13 +115,13 @@ public class Algoritmos {
 
             // calculo la parte de la izquierda de la franja
             int franjaIzq = pivote;
-            while (franjaIzq > izq && (t.get(pivote).getX() - t.get(franjaIzq).getX()) < minDistance) {
+            while (franjaIzq >= izq && (t.get(pivote).getX() - t.get(franjaIzq).getX()) < minDistance) {
                 franjaIzq--;
             }
 
             // calculo  la parte de la derecha de la franja
             int franjaDer = pivote + 1;
-            while (franjaDer < der && (t.get(franjaDer).getX() - t.get(pivote).getX()) < minDistance) {
+            while (franjaDer <= der && (t.get(franjaDer).getX() - t.get(pivote).getX()) < minDistance) {
                 franjaDer++;
             }
 
@@ -117,7 +132,6 @@ public class Algoritmos {
                         break;
                     } else {
                         distancia = distancia(t.get(i), t.get(j));
-                        contador++;
                         if (distancia < minDistance) {
                             retorno.set(0, t.get(i));
                             retorno.set(1, t.get(j));
@@ -127,10 +141,16 @@ public class Algoritmos {
                 }
             }
         } else {
-            retorno = exhaustivo(t, izq, der);
+            retorno = exhaustivoPoda(t, izq, der);
         }
 
         return retorno;
+    }
+
+    public static ArrayList<Punto> dyvMejorado(ArrayList<Punto> t) {
+        minDistance = Double.MAX_VALUE;
+        resetContador();
+        return dyvMejorado(t, 0, t.size() -1 );
     }
 
     public static ArrayList<Punto> dyvMejorado(ArrayList<Punto> t, int izq, int der) {
@@ -139,15 +159,11 @@ public class Algoritmos {
 
         if (nElementos >= 4) {
             int pivote = (izq + der) / 2;
-            double minDistance;
 
             ArrayList<Punto> solIzq = dyvMejorado(t, izq, pivote);
+            double distIzq = minDistance;
             ArrayList<Punto> solDer = dyvMejorado(t, pivote + 1, der);
-
-            double distIzq = distancia(solIzq.get(0), solIzq.get(1));
-            contador++;
-            double distDer = distancia(solDer.get(0), solDer.get(1));
-            contador++;
+            double distDer = minDistance;
 
             if (distIzq <= distDer) {
                 minDistance = distIzq;
@@ -159,19 +175,19 @@ public class Algoritmos {
 
             // calculo la parte de la izquierda de la franja
             int franjaIzq = pivote;
-            while (franjaIzq > izq && (t.get(pivote).getX() - t.get(franjaIzq).getX()) < minDistance) {
+            while (franjaIzq >= izq && (t.get(pivote).getX() - t.get(franjaIzq).getX()) < minDistance) {
                 franjaIzq--;
             }
 
             // calculo  la parte de la derecha de la franja
             int franjaDer = pivote + 1;
-            while (franjaDer < der && (t.get(franjaDer).getX() - t.get(pivote).getX()) < minDistance) {
+            while (franjaDer <= der && (t.get(franjaDer).getX() - t.get(pivote).getX()) < minDistance) {
                 franjaDer++;
             }
 
             // array auxiliar que vamos a ordenar por y y despues hacerle un exhaustivo
             ArrayList<Punto> franja = new ArrayList<>();
-            for (int i = franjaIzq + 1; i <= franjaDer - 1; i++) {
+            for (int i = franjaIzq + 1; i < franjaDer; i++) {
                 franja.add(t.get(i));
             }
 
@@ -180,19 +196,19 @@ public class Algoritmos {
 
             double distancia = 0;
             for (int i = 0; i < franja.size(); i++) {
-                for (int j = i + 1; j < franja.size() && (franja.get(j).getY() - franja.get(i).getY()) < minDistance && j <= 11 + i; j++) {
+                for (int j = i + 1; j < franja.size() && (franja.get(j).getY() - franja.get(i).getY()) < minDistance ; j++) {
                     distancia = distancia(franja.get(i), franja.get(j));
-                    contador++;
                     if (distancia < minDistance) {
-                        retorno.set(0, franja.get(i));
-                        retorno.set(1, franja.get(j));
+                        retorno.clear();
+                        retorno.add(franja.get(i));
+                        retorno.add(franja.get(j));
                         minDistance = distancia;
                     }
                 }
             }
 
         } else {
-            retorno = exhaustivo(t, izq, der);
+            retorno = exhaustivoPoda(t, izq, der);
         }
 
 

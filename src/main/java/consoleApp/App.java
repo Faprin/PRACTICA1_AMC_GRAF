@@ -155,7 +155,7 @@ public class App {
                         estrategias = copiaArray(memoria);
                         Algoritmos.resetContador();
                         startTime = System.nanoTime();
-                        ArrayList<Punto> exhaustivo = Algoritmos.exhaustivo(estrategias, 0, estrategias.size());
+                        ArrayList<Punto> exhaustivo = Algoritmos.exhaustivo(estrategias);
                         endTime = System.nanoTime();
                         duration = (endTime - startTime) / 1e6;
                         ProcessFile.fileXArray(estrategias, "exhaustivo");
@@ -164,7 +164,7 @@ public class App {
                                 "Exhaustivo",
                                 exhaustivo.get(0),
                                 exhaustivo.get(1),
-                                Algoritmos.distancia(exhaustivo.get(0), exhaustivo.get(1)),
+                                Algoritmos.getMinDistance(),
                                 Algoritmos.getContador(),
                                 duration);
 
@@ -172,7 +172,7 @@ public class App {
                         estrategias = copiaArray(memoria);
                         Algoritmos.resetContador();
                         startTime = System.nanoTime();
-                        ArrayList<Punto> exhaustivoPoda = Algoritmos.exhaustivoPoda(estrategias, 0, estrategias.size());
+                        ArrayList<Punto> exhaustivoPoda = Algoritmos.exhaustivoPoda(estrategias);
                         endTime = System.nanoTime();
                         duration = (endTime - startTime) / 1e6;
                         ProcessFile.fileXArray(estrategias, "exhaustivoPoda");
@@ -181,7 +181,7 @@ public class App {
                                 "Exhaustivo Poda",
                                 exhaustivoPoda.get(0),
                                 exhaustivoPoda.get(1),
-                                Algoritmos.distancia(exhaustivoPoda.get(0), exhaustivoPoda.get(1)),
+                                Algoritmos.getMinDistance(),
                                 Algoritmos.getContador(),
                                 duration);
 
@@ -191,7 +191,7 @@ public class App {
                         Algoritmos.resetContador();
                         startTime = System.nanoTime();
                         Algoritmos.quickSort(estrategias, 'x');
-                        ArrayList<Punto> dyv = Algoritmos.dyv(estrategias, 0, estrategias.size());
+                        ArrayList<Punto> dyv = Algoritmos.dyv(estrategias);
                         endTime = System.nanoTime();
                         duration = (endTime - startTime) / 1e6;
                         ProcessFile.fileXArray(estrategias, "dyv");
@@ -200,7 +200,7 @@ public class App {
                                 "DyV",
                                 dyv.get(0),
                                 dyv.get(1),
-                                Algoritmos.distancia(dyv.get(0), dyv.get(1)),
+                                Algoritmos.getMinDistance(),
                                 Algoritmos.getContador(),
                                 duration);
 
@@ -210,7 +210,7 @@ public class App {
                         Algoritmos.resetContador();
                         startTime = System.nanoTime();
                         Algoritmos.quickSort(estrategias, 'x');
-                        ArrayList<Punto> dyvMejorado = Algoritmos.dyvMejorado(estrategias, 0, estrategias.size());
+                        ArrayList<Punto> dyvMejorado = Algoritmos.dyvMejorado(estrategias);
                         endTime = System.nanoTime();
                         duration = (endTime - startTime) / 1e6;
                         ProcessFile.fileXArray(estrategias, "dyvMejorado");
@@ -219,7 +219,7 @@ public class App {
                                 "DyV Mejorado",
                                 dyvMejorado.get(0),
                                 dyvMejorado.get(1),
-                                Algoritmos.distancia(dyvMejorado.get(0), dyvMejorado.get(1)),
+                                Algoritmos.getMinDistance(),
                                 Algoritmos.getContador(),
                                 duration);
 
