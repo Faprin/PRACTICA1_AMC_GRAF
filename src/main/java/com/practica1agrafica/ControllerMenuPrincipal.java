@@ -2,8 +2,6 @@ package com.practica1agrafica;
 
 import consoleApp.Algoritmos;
 import consoleApp.ProcessFile;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -36,8 +34,8 @@ public class ControllerMenuPrincipal {
             for (int i = 0; i < talla; i++) {
                 num = random.nextInt(4000 - 1 + 1) + 1; // entre 1 y 4000
                 den = random.nextInt(17 - 7 + 1) + 7; // entre 1 y 17
-                x = num/((double) den+0.37);
-                y = (random.nextInt(4000 -1+1) + 1)/((double) (random.nextInt(17 - 7 + 1) + 7)+0.37);
+                x = num / ((double) den + 0.37);
+                y = (random.nextInt(4000 - 1 + 1) + 1) / ((double) (random.nextInt(17 - 7 + 1) + 7) + 0.37);
                 datos.add(new Punto());
                 datos.get(i).setId(i + 1);
                 datos.get(i).setX(x);
@@ -62,8 +60,8 @@ public class ControllerMenuPrincipal {
     }
 
     @FXML
-    public  void switchPeorCaso() {
-        if(peorCaso) {
+    public void switchPeorCaso() {
+        if (peorCaso) {
             peorCaso = false;
         } else {
             peorCaso = true;
@@ -91,12 +89,12 @@ public class ControllerMenuPrincipal {
         result.ifPresent(capacidadStr -> {
             try {
                 int capacidad = Integer.parseInt(capacidadStr);
-                if(!getPeorCaso()) {
+                if (!getPeorCaso()) {
                     ProcessFile.createFile(capacidad);
                 } else {
                     ProcessFile.createFileWorstCase(capacidad);
                 }
-            } catch( NumberFormatException e ) {
+            } catch (NumberFormatException e) {
                 System.out.println("No se puede crear dataset");
             }
         });
@@ -205,7 +203,7 @@ public class ControllerMenuPrincipal {
             Parent root = fxmlLoader.load();
 
             // Obtener el controlador de la ventana de resultados y pasar el texto
-            ControllerCompararEstrategias controller = fxmlLoader.getController();
+            ControllerCompobarEstrategias controller = fxmlLoader.getController();
             controller.mostrarResultado(resultado.toString());
 
             // Crear y mostrar la ventana de resultados
@@ -226,7 +224,22 @@ public class ControllerMenuPrincipal {
     // CASE 4
     @FXML
     public void compararTodasEstrategias() throws IOException {
+        // abro la ventana y subdelego el codigo al controlador
+        try {
+            // Cargar el archivo FXML de la nueva ventana
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("case4.fxml"));
+            Parent root = fxmlLoader.load();
 
+            // Crear y configurar la nueva ventana (Stage)
+            Stage stage = new Stage();
+            stage.setTitle("Comparar todas las estrategias");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error al cargar la ventana: " + e.getMessage());
+        }
     }
 
 
@@ -249,7 +262,6 @@ public class ControllerMenuPrincipal {
         }
 
     }
-
 
 
 }

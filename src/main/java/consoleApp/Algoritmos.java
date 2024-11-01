@@ -191,19 +191,6 @@ public class Algoritmos {
                 }
             }
 
-
-            /*for (int i = pivote-1; i >= 0; i--) {
-                for (int j = pivote + 1; j < franja.size() && (franja.get(j).getY() - franja.get(i).getY() < minDistance) && (j <= 11); j++) {
-                    distancia = distancia(franja.get(i), franja.get(j));
-                    contador++;
-                    if (distancia < minDistance) {
-                        retorno.set(0, t.get(i));
-                        retorno.set(1, t.get(j));
-                        minDistance = distancia;
-                    }
-                }
-            }*/
-
         } else {
             retorno = exhaustivo(t, izq, der);
         }
@@ -211,6 +198,7 @@ public class Algoritmos {
 
         return retorno;
     }
+
 
     /* ----- ORDENACION ----- */
     public static void quickSort(ArrayList<Punto> t, char eje) {

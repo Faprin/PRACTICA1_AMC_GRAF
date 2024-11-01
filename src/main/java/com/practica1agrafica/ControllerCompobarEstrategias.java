@@ -3,7 +3,7 @@ package com.practica1agrafica;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 
-public class ControllerCompararEstrategias {
+public class ControllerCompobarEstrategias {
 
     @FXML
     private TextArea resultadoTextArea;

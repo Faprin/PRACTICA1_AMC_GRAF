@@ -1,6 +1,7 @@
 package com.practica1agrafica;
 
 import consoleApp.Algoritmos;
+import consoleApp.ProcessFile;
 import consoleApp.Punto;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -196,12 +197,12 @@ public class Controller2Estrategias implements Initializable {
                 }
             }
 
-            // Añadir los resultados formateados a la variable resultado
             resultado.append(String.format(
                     "%-10d%-25.4f%-25d%-25.4f%-25d\n", i,
                     (tiempoAlg1[iter] / 1e6), calculadasAlg1,
                     (tiempoAlg2[iter] / 1e6), calculadasAlg2
             ));
+
             iter++;
         }
 

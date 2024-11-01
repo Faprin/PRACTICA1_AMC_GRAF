@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.practica1agrafica.ControllerCase4">
+    <TableView fx:id="tablaResultados">
+        <columns>
+            <TableColumn text="Talla" fx:id="colTalla" />
+            <TableColumn text="Exhaustivo" fx:id="colExhaustivo" />
+            <TableColumn text="Exhaustivo Poda" fx:id="colExhaustivoPoda" />
+            <TableColumn text="DyV" fx:id="colDyV" />
+            <TableColumn text="DyV Mejorado" fx:id="colDyVMejorado" />
+        </columns>
+    </TableView>
+</VBox>

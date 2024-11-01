@@ -3,6 +3,6 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.practica1agrafica.ControllerCompararEstrategias">
+<VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.practica1agrafica.ControllerCompobarEstrategias">
     <TextArea fx:id="resultadoTextArea" editable="false" prefHeight="300" prefWidth="800" />
 </VBox>
